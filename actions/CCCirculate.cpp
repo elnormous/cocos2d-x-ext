@@ -1,11 +1,11 @@
-#include "CCHover.h"
+#include "CCCirculate.h"
 
 USING_NS_CC;
 
 Circulate* Circulate::create(float duration, const cocos2d::Point& center)
 {
-    Hover* action = new Hover();
-    action->initWithDuration(duration, radius, center);
+    Circulate* action = new Circulate();
+    action->initWithDuration(duration, center);
     action->autorelease();
 	
     return action;
@@ -27,7 +27,7 @@ void Circulate::startWithTarget(cocos2d::Node* target)
 {
 	CCActionInterval::startWithTarget(target);
     _startPos = target->getPosition();
-    _radius = _startPos.distance(target);
+    _radius = _startPos.distance(_center);
 }
 
 void Circulate::update(float time)
@@ -36,7 +36,7 @@ void Circulate::update(float time)
     {
     	// use start position
 		_target->setPosition(
-			Point(center.x - _radius * cosf(M_PI * 2.0f * time),
-				center.y + _radius * sinf(M_PI * 2.0f * time)));
+			Point(_center.x - _radius * cosf(M_PI * 2.0f * time),
+				_center.y + _radius * sinf(M_PI * 2.0f * time)));
     }
 }
