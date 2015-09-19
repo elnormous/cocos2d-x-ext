@@ -13,7 +13,7 @@ Hover* Hover::create(float duration, float distance)
 
 bool Hover::initWithDuration(float duration, float distance)
 {
-    if (CCActionInterval::initWithDuration(duration))
+    if (ActionInterval::initWithDuration(duration))
     {
 		_distance = distance;
 		
@@ -25,7 +25,7 @@ bool Hover::initWithDuration(float duration, float distance)
 
 void Hover::startWithTarget(cocos2d::Node* target)
 {
-	CCActionInterval::startWithTarget(target);
+	ActionInterval::startWithTarget(target);
     _startPos = target->getPosition();
 }
 
@@ -41,5 +41,5 @@ void Hover::stop(void)
 {
 	_target->setPosition(_startPos);
 	
-	CCActionInterval::stop();
+	ActionInterval::stop();
 }

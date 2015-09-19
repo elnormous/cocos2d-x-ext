@@ -13,7 +13,7 @@ Circulate* Circulate::create(float duration, const cocos2d::Point& center, bool 
 
 bool Circulate::initWithDuration(float duration, const cocos2d::Point& center, bool clockwise)
 {
-    if (CCActionInterval::initWithDuration(duration))
+    if (ActionInterval::initWithDuration(duration))
     {
         _center = center;
         _clockwise = clockwise;
@@ -26,7 +26,7 @@ bool Circulate::initWithDuration(float duration, const cocos2d::Point& center, b
 
 void Circulate::startWithTarget(cocos2d::Node* target)
 {
-	CCActionInterval::startWithTarget(target);
+	ActionInterval::startWithTarget(target);
     _startPos = target->getPosition();
     _radius = _startPos.distance(_center);
     

@@ -23,7 +23,7 @@ Shake* Shake::create(float duration, cocos2d::Point strength)
 
 bool Shake::initWithDuration(float duration, cocos2d::Point strength)
 {
-	if (CCActionInterval::initWithDuration(duration))
+	if (ActionInterval::initWithDuration(duration))
 	{
 		_strength = strength;
 		return true;
@@ -42,7 +42,7 @@ void Shake::update(float time)
 
 void Shake::startWithTarget(Node* target)
 {
-	CCActionInterval::startWithTarget(target);
+	ActionInterval::startWithTarget(target);
 	
 	_initial = target->getPosition();
 }
@@ -51,5 +51,5 @@ void Shake::stop(void)
 {
 	_target->setPosition(_initial);
 	
-	CCActionInterval::stop();
+	ActionInterval::stop();
 }
