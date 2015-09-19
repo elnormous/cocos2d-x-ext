@@ -10,9 +10,9 @@ public:
 	
 	bool initWithDuration(float d, cocos2d::Point strength);
 	
-	virtual void startWithTarget(cocos2d::Node* target);
-	virtual void update(float time);
-	virtual void stop(void);
+	virtual void startWithTarget(cocos2d::Node* target) override;
+	virtual void update(float time) override;
+	virtual void stop(void) override;
 	
 protected:
 	cocos2d::Point _initial;

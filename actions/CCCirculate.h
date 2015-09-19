@@ -10,8 +10,8 @@ public:
 	
 	bool initWithDuration(float duration, const cocos2d::Point& center, bool clockwise);
 	
-	virtual void startWithTarget(cocos2d::Node* target);
-	virtual void update(float time);
+	virtual void startWithTarget(cocos2d::Node* target) override;
+	virtual void update(float time) override;
 	
 private:
     float _radius;

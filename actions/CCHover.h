@@ -10,9 +10,9 @@ public:
 	
 	bool initWithDuration(float duration, float distance);
 	
-	virtual void startWithTarget(cocos2d::Node* target);
-	virtual void update(float time);
-	virtual void stop(void);
+	virtual void startWithTarget(cocos2d::Node* target) override;
+	virtual void update(float time) override;
+	virtual void stop(void) override;
 	
 private:
 	float _distance;
