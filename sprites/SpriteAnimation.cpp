@@ -11,6 +11,78 @@
 USING_NS_CC;
 using namespace std;
 
+class FrameParser : public SAXDelegator
+{
+public:
+    SpriteFrameCache* _cache;
+    vector<string> _keys;
+    Vector<SpriteFrame*> _frames;
+    
+    bool _key = false;
+    
+public:
+    FrameParser()
+    {
+        _cache = SpriteFrameCache::getInstance();
+    }
+    
+    ~FrameParser()
+    {
+    }
+    
+    Vector<SpriteFrame*> getFrames(const std::string& fileName)
+    {
+        SAXParser parser;
+        
+        CCASSERT(parser.init("UTF-8"), "The file format isn't UTF-8");
+        parser.setDelegator(this);
+        
+        parser.parse(fileName);
+        
+        return _frames;
+    }
+    
+    void startElement(void *ctx, const char *name, const char **atts)
+    {
+        CC_UNUSED_PARAM(ctx);
+        CC_UNUSED_PARAM(atts);
+        const std::string sName(name);
+        
+        _key = (sName == "key");
+    }
+    
+    void endElement(void *ctx, const char *name)
+    {
+        CC_UNUSED_PARAM(ctx);
+        const std::string sName((char*)name);
+        
+        if (sName != "key" && !_keys.empty())
+        {
+            _keys.pop_back();
+        }
+        
+        _key = false;
+    }
+    
+    void textHandler(void *ctx, const char *ch, int len)
+    {
+        CC_UNUSED_PARAM(ctx);
+        
+        const std::string text = std::string((char*)ch,len);
+        
+        if (_key)
+        {
+            if (_keys.size() == 1 && _keys.front() == "frames")
+            {
+                SpriteFrame* frame = _cache->getSpriteFrameByName(text);
+                _frames.pushBack(frame);
+            }
+            
+            _keys.push_back(text);
+        }
+    }
+};
+
 SpriteAnimation* SpriteAnimation::create(const std::string& plist, float delay)
 {
     SpriteAnimation* ret = new SpriteAnimation();
@@ -44,34 +116,19 @@ bool SpriteAnimation::init(const std::string& plist, float delay)
 		return false;
 	}
 	
-	string animationName = plist + "_" + to_string(delay);
-	_animation = AnimationCache::getInstance()->getAnimation(animationName);
+	_animation = AnimationCache::getInstance()->getAnimation(plist);
 	
 	if (!_animation)
 	{
 		SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 		cache->addSpriteFramesWithFile(plist);
 		
-		ValueMap values = FileUtils::getInstance()->getValueMapFromFile(plist);
-		
-		vector<string> frameNames;
-		for (const pair<string, Value>& frame : values["frames"].asValueMap())
-		{
-			frameNames.push_back(frame.first);
-		}
-		
-		sort(frameNames.begin(), frameNames.end());
-		
-		Vector<SpriteFrame*> animFrames;
-		for (const string& frameName : frameNames)
-		{
-			SpriteFrame* frame = cache->getSpriteFrameByName(frameName);
-			animFrames.pushBack(frame);
-		}
+		FrameParser parser;
+        Vector<SpriteFrame*> animFrames = parser.getFrames(plist);
 		
 		_animation = Animation::createWithSpriteFrames(animFrames, delay);
 		
-		AnimationCache::getInstance()->addAnimation(_animation, animationName);
+		AnimationCache::getInstance()->addAnimation(_animation, plist);
 	}
 	
 	_action = Animate::create(_animation);
@@ -82,7 +139,7 @@ bool SpriteAnimation::init(const std::string& plist, float delay)
 	
 	//set the current frame to first frame of animation
 	setSpriteFrame(_animation->getFrames().at(0)->getSpriteFrame());
-	
+    
 	return true;
 }
 
