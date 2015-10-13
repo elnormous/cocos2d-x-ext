@@ -131,6 +131,11 @@ bool SpriteAnimation::init(const std::string& plist, float delay)
 		AnimationCache::getInstance()->addAnimation(_animation, plist);
 	}
 	
+    if (_animation->getFrames().empty())
+    {
+        return false;
+    }
+    
 	_action = Animate::create(_animation);
 	_action->retain();
 	
