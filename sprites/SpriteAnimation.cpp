@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Bool Games. All rights reserved.
 //
 #include "SpriteAnimation.h"
-#include <algorithm>
 
 USING_NS_CC;
 using namespace std;
