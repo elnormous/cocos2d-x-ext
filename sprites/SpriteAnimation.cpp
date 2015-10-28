@@ -33,7 +33,7 @@ public:
     {
         SAXParser parser;
         
-        CCASSERT(parser.init("UTF-8"), "The file format isn't UTF-8");
+        parser.init("UTF-8");
         parser.setDelegator(this);
         
         parser.parse(fileName);
