@@ -182,6 +182,34 @@ bool SpriteAnimation::isPlaying()
 	return (_currentAction && !_currentAction->isDone());
 }
 
+float SpriteAnimation::getDelay() const
+{
+    if (!_animation)
+    {
+        return 0.0f;
+    }
+    
+    return _animation->getDelayPerUnit();
+}
+
+void SpriteAnimation::setDelay(float delay)
+{
+    if (_animation)
+    {
+        _animation->setDelayPerUnit(delay);
+        
+        if (_action)
+        {
+            _action->release();
+        }
+        
+        _action = Animate::create(_animation);
+        _action->retain();
+        
+        _repeatAction->setInnerAction(_action);
+    }
+}
+
 void SpriteAnimation::setAliasTexParameters()
 {
     const Vector<AnimationFrame*>& frames = _animation->getFrames();

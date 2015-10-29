@@ -23,13 +23,16 @@ public:
 	virtual void stop();
 	virtual bool isPlaying();
     
+    float getDelay() const;
+    void setDelay(float delay);
+    
     void setAliasTexParameters();
     void setAntiAliasTexParameters();
 	
 private:
 	CC_DISALLOW_COPY_AND_ASSIGN(SpriteAnimation);
 	
-	cocos2d::ActionInterval* _action;
+	cocos2d::Animate* _action;
 	cocos2d::RepeatForever* _repeatAction;
 	
 	cocos2d::Animation* _animation;
