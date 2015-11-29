@@ -23,6 +23,8 @@ public:
 	virtual void stop();
 	virtual bool isPlaying();
     
+    virtual void reset();
+    
     float getDelay() const;
     void setDelay(float delay);
     

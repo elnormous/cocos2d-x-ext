@@ -182,6 +182,14 @@ bool SpriteAnimation::isPlaying()
 	return (_currentAction && !_currentAction->isDone());
 }
 
+void SpriteAnimation::reset()
+{
+    stop();
+    
+    //set the current frame to first frame of animation
+    setSpriteFrame(_animation->getFrames().at(0)->getSpriteFrame());
+}
+
 float SpriteAnimation::getDelay() const
 {
     if (!_animation)
